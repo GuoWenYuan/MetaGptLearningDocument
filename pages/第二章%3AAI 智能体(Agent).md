@@ -29,13 +29,13 @@
 - 在听过metagpt作者分享后 https://www.bilibili.com/video/BV1Ru411V7XL/?spm_id_from=333.337.search-card.all.click&vd_source=199360a57d436da9caa4d615e469c770
 - 笔者读了metagpt与HuggingGPT的相关论文。
 - metagpt agent 多智能体图示
-- ![image.png](../assets/image_1705237746534_0.png)
+- https://raw.githubusercontent.com/GuoWenYuan/MetaGptLearningDocument/main/assets/image_1705237746534_0.png
 - huggingGpt：
-- ![image.png](../assets/image_1705237815596_0.png)
+- https://raw.githubusercontent.com/GuoWenYuan/MetaGptLearningDocument/main/assets/image_1705237815596_0.png
 - 这里两者在代码中实现多智能体的方式是差不多的(个人理解)，均是制定plan->拆分task->按顺序执行task->收集最终结果
-- huggingGpt是由gpt来做中心大脑，链接不同大模型的大脑来完成需求，更像是一个多模态结果。
+- huggingGpt是由gpt来做中心大脑，链接不同大模型的大脑来完成需求，更像是一个多模态结果,但个人感觉在现在的情况下，某些行为由自定义或者人直接干预会好一些。
 - 而metagpt是由单一大模型来做不同角色的大脑，由不同角色来共同完成一个复杂的需求。更像是解决单一工业流程的
-- **还没读metagpt最新的0.6代码，之前0,4的代码也只是粗略的过了一遍，但觉得在metagpt中植入多模态功能制作huggingGpt的效果来说并不复杂，这样对于metagpt的agent感知来说，数据来源就更加的多样化了，可以将多套SOP合并为一个复杂的SOP，美术SOP+程序SOP+市场SOP=软件公司**
+- **还没读metagpt最新的0.6代码，之前0.4的代码也只是粗略的过了一遍，但觉得在metagpt中植入多模态功能制作huggingGpt的效果来说并不复杂，做成几个action就行了，最终思考:可以将多套SOP合并为一个复杂的SOP，美术SOP+程序SOP+市场SOP=软件公司SOP**
 -
 - **立个flag，尝试增加一套美术流程(虽然我不懂美术，毕竟程序不懂审美),先把metagpt的代码精度一遍之后再做，代码写的很好，python入门必看！**
 -
