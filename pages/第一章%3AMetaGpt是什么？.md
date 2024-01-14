@@ -15,11 +15,9 @@
 		- 即使用LLM 大模型来进行每一个步骤的自动化
 		- 这句话比较好理解，就是使用LLM大模型来完成SOP中的每一个环节
 	- 那么我们重新来理解这句话就是，使用大模型来完成制定的标准化流程，最终完成Boss(指代我们自己)的要求。
-	-
 - MetaGpt部署流程:
 	- 1.在你的代码编辑器终端中使用 git clone https://github.com/geekan/MetaGPT
 		- 这里笔者clone的是最新的0.6版本，这里仅是个人习惯，因为在metaGpt不断升级的过程中，大量的好的结构与思想不对的完善以及修改，而且如果在运行因版本过新导致的bug也可以使我们在debug的过程中更加了解metagpt的实现流程
-			-
 	- 2.环境初始化
 		- 在编辑器终端输入`pip install -r .\requirements.txt`即可快速收集相关引用
 	- 3.配置文件:
@@ -27,6 +25,8 @@
 		- 可复制一份config.yaml,并重命名为key.yaml，在文件中进行相关LLM的配置即可
 		- 当然直接在config.yaml中进行修改也可，但是要注意在commit 过程中不要提交你的大模型的配置
 		- 最新版本中的模型默认是openai，若想修改为其他默认大模型可在配置文件中修改*DEFAULT_PROVIDER* 字段为你需要的基础模型，具体对应的枚举类型在MetaGpt/metagpt/config.py中
+		- 如图
+		- https://raw.githubusercontent.com/GuoWenYuan/MetaGptLearningDocument/main/assets/image_1705230666518_0.png
 	- 4.运行第一行代码:
 		- 在MetaGpt目录下新建代码test1
 		- 内容如下
