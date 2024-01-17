@@ -33,8 +33,8 @@ class LocalCoderReader(Action):
                 code_name = code_path.split("/")[-1]
                 code_content = f.read()
                 #转换为json格式返回
-                json_data = json.dumps([{'code_name': code_name, 'code_path': code_path, 'code_content': code_content}])
-                logger.info(f'本地代码读取完成:{json_data}')  # 这里使用metegpt的logger，info以上级别会在本地写入内容，方便看流程~
+                json_data = json.dumps({'code_name': code_name, 'code_path': code_path, 'code_content': code_content},ensure_ascii=False)
+                #logger.info(f'本地代码读取完成:{json_data}')  # 这里使用metegpt的logger，info以上级别会在本地写入内容，方便看流程~
                 resp.append(json_data)
         return json.dumps(resp)
 
