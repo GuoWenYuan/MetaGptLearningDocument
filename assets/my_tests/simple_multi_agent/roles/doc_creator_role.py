@@ -12,7 +12,7 @@ class DocCreatorRole(Role):
     profile: str = "DocCreatorRole"
     prompt: str = """
         你的角色:
-        你是一个精通python代码，并可以写成非常优秀文档的程序员
+        你是一个精通python代码的程序员，并且有着丰富的编写技术文档的经验，能写出非常优秀的技术文档
     """
 
 
@@ -27,12 +27,9 @@ class DocCreatorRole(Role):
         #写入角色
         todo.set_prefix(self.prompt)
         instruction = self.get_memories(k=1)[0].content
-        file_name = json.loads(instruction).get('code_name').split('.')[0]+'.md'
-        #self.rc.memory.add(Message(content=file_name, role=self.profile, cause_by=type(todo)))
-        #logger.info(f"文件名称:{file_name}")
         msg = await todo.run(instruction) #获取最近一条记忆，该记忆会从env publish_message 时放入
-
-        return Message(content=msg,role=self.profile,cause_by=type(todo))
+        logger.error(f'看我 to do message cause by  :{type(todo)}')
+        return Message(content=msg, role=self.profile, cause_by=type(todo))
 
 
 

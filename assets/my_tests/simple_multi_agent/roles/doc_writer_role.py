@@ -16,13 +16,15 @@ class WriteDocRole(Role):
         self.init_actions([WriteDocAction])
 
     async def _act(self) -> Message:
+        logger.info(f'开始写入本地文件')
         todo = self.rc.todo
-
-        msg = await todo.run(self.get_memories(k=1)[0].content)
+        doc_name = self.rc.env.get_role("PM").cur_doc_name #获取当前pm需求需要写入的文档内容
+        msg = await todo.run(doc_name, self.get_memories(k=1)[0].content)
 
         msg = Message(content=msg, role=self.profile,
                       cause_by=type(todo))
-
-        self.publish_message(msg)
+        #广播数据已经写入完成
+        #self.publish_message(msg)
         # logger.info(f"下一次处理的文件内容为:{msg}")
         return msg
+

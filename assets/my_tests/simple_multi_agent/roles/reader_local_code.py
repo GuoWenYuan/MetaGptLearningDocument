@@ -19,13 +19,13 @@ class ReaderLocalCode(Role):
     async def _act(self) -> Message:
         """这里重写_act的逻辑原因是我们在当前步骤不需要与大模型产生交互"""
         logger.info(f"{self._setting}: to do {self.rc.todo}({self.rc.todo.name})")
-        todo = self.rc.todo  # todo will be SimpleWriteCode()
+        todo = self.rc.todo #todo = 读取本地代码文件
 
         msg = self.get_memories(k=2)[0]  # find the most recent messages
         running_resp = await todo.run(msg.content)
         msg = Message(content=running_resp, role=self.profile,
                       cause_by=type(todo))
-        self.rc.memory.add(msg)  #为角色增加记忆
+        self.rc.memory.add(msg)  #为角色增加记忆,记忆内容为本地读取文件的json内容
 
         return msg
 

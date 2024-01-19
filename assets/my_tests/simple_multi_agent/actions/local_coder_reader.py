@@ -28,13 +28,11 @@ class LocalCoderReader(Action):
         resp = []
         for code_path in code_paths:
             with open(code_path, "r", encoding="utf-8") as f:
-                #这里产生了问题，我们该以何种形式进行数据的返回?
-                #思考后觉得使用json的格式  格式为[{code_name = 文件名称,code_path = 文件本地路径，code_content =  文件内容}]
+                #[{code_name = 文件名称,code_path = 文件本地路径，code_content =  文件内容}]
                 code_name = code_path.split("/")[-1]
                 code_content = f.read()
                 #转换为json格式返回
                 json_data = json.dumps({'code_name': code_name, 'code_path': code_path, 'code_content': code_content},ensure_ascii=False)
-                #logger.info(f'本地代码读取完成:{json_data}')  # 这里使用metegpt的logger，info以上级别会在本地写入内容，方便看流程~
                 resp.append(json_data)
         return json.dumps(resp)
 
