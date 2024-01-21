@@ -63,14 +63,12 @@
 -
 - 那么在官方多智能体的例子中，我做了一定修改，对于我自身来说，对python不是很熟悉，源码中掺杂了大量的语法糖与第三方的python库，对于不熟悉的内容，我每次都需要一个个去查，所以我决定将多智能体的例子修改为: **使用多agent的配合来完成理解metagpt代码,并将其中大量的python语法糖与第三方库的用法及相关内容保存到本地(现有的code相关ai工具也能完成，但是我依然嫌每次打开和交流很麻烦，而且有时候可能我会遗忘掉他介绍过的内容)**
 - 第一步:拆分需求:
-  collapsed:: true
 	- 1.实际需求: `找到想理解的代码 -> 阅读代码,并翻译代码->找到代码里的第三方库与语法糖-> 整理成md文档 -> 收到教程 -> 写入本地需要阅读的代码可能有很多个文件，所以在实际需求中的步骤会反复执行多轮，不一起请求也是担心token超过最大数量限制，所以我们在Role中加入了一个新的角色，称之为审核的角色，主要职能是审核是否完成了用户所有对于代码阅读的需求。
 	- 2.拆分需要使用到的Role: `读取代码角色->确定所有内容是否已经写入完成->理解代码角色->编写教程内容角色->在本地写入文件角色`
 	- 3.拆分需要使用到的Action:  `读取本地代码行为->确定内容是否写入完成行为->编写教程内容行为->在本地写文件行为`
 	- 为方便理解，我们画一张小图来更加形象的表述一下这个流程
-	- ![源码精读工具.png](../assets/源码精读工具_1705809645402_0.png)
-- 第二步:相关Action的编写:  
-  collapsed:: true
+	- https://github.com/GuoWenYuan/MetaGptLearningDocument/blob/main/assets/%E6%BA%90%E7%A0%81%E7%B2%BE%E8%AF%BB%E5%B7%A5%E5%85%B7.png?raw=true
+- 第二步:相关Action的编写:
 	- 1.读取本地代码的->`LocalCoderReader`  相关实现代码如下(当然给文件夹路径也可以，稍微修改下就行了)
 	- ```
 	  from metagpt.actions import Action
@@ -386,7 +384,6 @@
 	        return msg
 	  ```
 - 第四步：组合后进行运行,相关代码(可将run中的路径换成你需要他读取文件的路径)：
-  collapsed:: true
 	- ```
 	  from metagpt.team import Team
 	  from my_tests.simple_multi_agent.roles import PMRole,ReaderLocalCode,DocCreatorRole,WriteDocRole
@@ -408,10 +405,11 @@
 	- 这里的n_round 运行次数为10次，因metagpt运行方式为并行执行所有的Role，若Role中有新的记忆则进行执行，不然不运行，这里新的记忆来源于该角色监听的行为。当前运行结束后，未被运行到的内容将不会再运行，等待下次运行后重新检索记忆中是否有记忆才会进行运行。当然可以使用在role内部循环的逻辑来执行多次行为，但个人觉得这样的方式不太智能，退出执行逻辑应该只有两个，一是资金不足，二是任务完成，不应该由n_round来控制执行次数以保证能完成任务。
 	- 最终生成的相关文档会在代码同目录的CodeDoc生成。
 - 内容总结：
-  collapsed:: true
 	- 通过上面的例子，我们基本理清楚了metagpt的运行流程，单次运行流程见下图:
-	- ![metagpt运行流程.jpg](../assets/metagpt运行流程_1705814107342_0.jpg)
+	- https://github.com/GuoWenYuan/MetaGptLearningDocument/blob/main/assets/metagpt%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B.jpg?raw=true
 	- 而n_round 控制的是执行这个逻辑执行多少次
 	- 我们结合Agent的定义来理解一下这些模块,见下图:
-	- ![Agent与Metagpt.jpg](../assets/Agent与Metagpt_1705815332554_0.jpg)
+	- https://github.com/GuoWenYuan/MetaGptLearningDocument/blob/main/assets/Agent%E4%B8%8EMetagpt.jpg?raw=true
+-
+-
 -
