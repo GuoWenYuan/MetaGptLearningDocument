@@ -1,0 +1,98 @@
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+package "Model" {
+ class CommodityModel {
+   -commodities: List<Commodity>
+   +GetCommodity(id: int): Commodity
+   +LoadCommodities(): void
+   +CheckCommodityAvailability(id: int): bool
+   +GetRecentPurchases(): List<Commodity>
+   +SearchCommodities(keyword: string): List<Commodity>
+   ' 其他模型层方法...
+ }
+ class CurrencyModel {
+   -currencyAmounts: Dictionary<CurrencyType, int>
+   +GetCurrencyAmount(type: CurrencyType): int
+   +UpdateCurrencyAmount(type: CurrencyType, amount: int): void
+   ' 其他模型层方法...
+ }
+}
+
+package "View" {
+ class ShopView {
+   +DisplayCommodities(commodities: List<Commodity>): void
+   +DisplayCurrencyAmounts(currencyAmounts: Dictionary<CurrencyType, int>): void
+   +ShowPurchasePopup(commodity: Commodity): void
+   +UpdateRecentPurchases(purchases: List<Commodity>): void
+   +ShowSearchResults(results: List<Commodity>): void
+   ' 其他视图层方法...
+ }
+ class CommodityView {
+   +DisplayCommodityDetails(commodity: Commodity): void
+   +DisplayCommodityModel(modelPath: string): void
+   ' 其他视图层方法...
+ }
+}
+
+package "Controller" {
+ class ShopController {
+   +OnCommoditySelected(id: int): void
+   +OnBuyCommodity(id: int, amount: int): void
+   +OnSearchSubmitted(keyword: string): void
+   +OnCurrencyClicked(type: CurrencyType): void
+   ' 其他控制层方法...
+ }
+ class CommodityController {
+   +OnCommodityBuyRequest(commodity: Commodity, amount: int): void
+   ' 其他控制层方法...
+ }
+}
+
+package "EventManager" {
+ class EventManager << (E,#FFD700) >>
+ struct ShopEvents << (S,#A9A9A9) >>
+}
+
+package "NetSystem" {
+ class NetSystem << (N,#87CEEB) >>
+}
+
+CommodityModel --> ShopView : "Updates"
+CurrencyModel --> ShopView : "Updates"
+
+ShopView --> ShopController : "Events"
+CommodityView --> CommodityController : "Events"
+
+ShopController --> CommodityModel : "Commands"
+CommodityController --> CommodityModel : "Commands"
+
+ShopController --> EventManager : "Publish Events"
+CommodityController --> EventManager : "Publish Events"
+
+ShopView --> EventManager : "AddListener"
+CommodityView --> EventManager : "AddListener"
+
+EventManager --> ShopEvents : "Contains"
+
+NetSystem --> ShopController : "Send Protocol"
+NetSystem --> CommodityController : "Send Protocol"
+
+NetSystem --> EventManager : "Listen for Protocol Events"
+
+ShopController --> EventManager : "Listen for Events"
+CommodityController --> EventManager : "Listen for Events"
+
+ShopView --> EventManager : "Listen for Events"
+CommodityView --> EventManager : "Listen for Events"
+@enduml
+```
+
+在上述架构中，`Model`层包含`CommodityModel`和`CurrencyModel`，负责处理商品和货币数据。`View`层包含`ShopView`和`CommodityView`，负责展示商城界面和商品详情。`Controller`层包含`ShopController`和`CommodityController`，负责处理用户输入和更新模型层数据。
+
+`EventManager`用于发布和监听事件，而`NetSystem`负责发送网络请求和监听网络协议。这些公用接口允许不同层之间的通信和事件处理。
+
+请注意，这是一个基本的架构图，实际的实现可能需要更多的类和方法来满足所有的需求。此外，根据实际的需求，可能还需要添加其他模块或服务。

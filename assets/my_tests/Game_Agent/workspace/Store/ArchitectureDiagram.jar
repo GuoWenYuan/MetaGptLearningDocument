@@ -1,0 +1,85 @@
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+package "Model Layer" {
+    class ShopModel {
+        -commodities: List<Commodity>
+        -shopTypes: List<ShopType>
+        -currencyAmounts: Dictionary<CurrencyType, int>
+        +GetCommodity(id: int): Commodity
+        +GetShopType(id: int): ShopType
+        +GetCurrencyAmount(type: CurrencyType): int
+    }
+    
+    class Commodity {
+        -id: int
+        -name: string
+        -price: float
+        -discount: float
+        -limit: int
+        -remainingTime: TimeSpan
+        +CheckBuyCondition(): bool
+        +GetDiscountedPrice(): float
+    }
+    
+    class ShopType {
+        -id: int
+        -name: string
+        -commodities: List<Commodity>
+        +GetCommodities(): List<Commodity>
+    }
+    
+    enum CurrencyType {
+        MagicStone
+        BoundMagic
+        Crystal
+        LegionCurrency
+    }
+}
+
+package "View Layer" {
+    class ShopView {
+        -shopModel: ShopModel
+        +UpdateCommoditiesDisplay()
+        +UpdateCurrencyDisplay()
+        +ShowBuyPopup(commodity: Commodity)
+    }
+    
+    class CommodityView {
+        -commodity: Commodity
+        +UpdateView()
+        +SetSelected(selected: bool)
+    }
+    
+    class ShopTypeView {
+        -shopType: ShopType
+        +UpdateView()
+        +SetSelected(selected: bool)
+    }
+}
+
+package "Controller Layer" {
+    class ShopController {
+        -shopModel: ShopModel
+        -shopView: ShopView
+        +OnCommoditySelected(commodityId: int)
+        +OnBuyCommodity(commodityId: int, quantity: int)
+        +OnSearch(keyword: string)
+    }
+    
+    class CurrencyController {
+        -shopModel: ShopModel
+        +UpdateCurrencyAmount(type: CurrencyType, amount: int)
+    }
+}
+
+ShopModel -right-> ShopView : "Updates"
+ShopModel -right-> ShopController : "Data Access"
+ShopView -right-> ShopController : "User Actions"
+ShopController -right-> ShopModel : "Commands"
+ShopController -right-> CurrencyController : "Currency Updates"
+
+@enduml
